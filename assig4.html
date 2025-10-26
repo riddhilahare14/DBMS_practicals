@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Assignment 4 - Roll No. 31145</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p { 
+            font-size: 1.2em; 
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .progress-indicator {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            background: #ffffff;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section h3 { 
+            color: #667eea; 
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .concept-box h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .concept-box p, .concept-box ul {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .concept-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        code { 
+            color: #68d391; 
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+        
+        .query-explanation {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 15px 20px;
+            border-left: 4px solid #38b2ac;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(56, 178, 172, 0.1);
+        }
+        
+        .query-explanation strong {
+            color: #2c7a7b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .badge.test {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .badge.step {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        table tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        table tr:nth-child(even) { 
+            background: #f8f9fa; 
+        }
+        
+        table tr:hover { 
+            background: #e6f2ff;
+            transform: scale(1.01);
+        }
+        
+        table td {
+            color: #495057;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 DBMS Assignment 4</h1>
+            <p>PL/SQL: Library Fine Calculation</p>
+            <p style="font-size: 1em; margin-top: 10px;">Roll No.: 31145 | Database: te31145_db</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="index.html" class="back-btn">
+                <span>←</span> Back to Home
+            </a>
+            <div class="progress-indicator">
+                <strong>Assignment 4:</strong> Control Structures & Exception Handling
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Problem Statement -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📋</span>
+                    Problem Statement
+                </h3>
+                <div class="concept-box">
+                    <h4>📖 Library Book Return System</h4>
+                    <p>Create a procedure to automate book returns with fine calculation based on days overdue, updating book status from 'I' (Issued) to 'R' (Returned).</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>💰 Fine Calculation Rules</h4>
+                    <p><strong>Days 0-15:</strong> No fine</p>
+                    <p><strong>Days 16-30:</strong> ₹5 per day</p>
+                    <p><strong>Days > 30:</strong> ₹75 + ₹50 per day beyond 30</p>
+                    <p><strong>Example (35 days):</strong> ₹75 + (5 × ₹50) = ₹325</p>
+                </div>
+            </div>
+
+            <!-- Database Setup -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">1️⃣</span>
+                    Database Setup
+                </h3>
+                <span class="badge step">Step 1</span>
+
+                <pre><code>USE te31145_db;
+
+CREATE TABLE Borrower (
+    roll_no INT,
+    borr_name VARCHAR(50),
+    date_of_issue DATE,
+    book_name VARCHAR(50),
+    status CHAR(1)  -- 'I' for Issued, 'R' for Returned
+);
+
+CREATE TABLE Fine (
+    roll_no INT,
+    fine_date DATE,
+    fine_amt DECIMAL(10, 2)
+);</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- PL/SQL Procedure -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">2️⃣</span>
+                    Stored Procedure
+                </h3>
+                <span class="badge step">Step 2</span>
+
+                <pre><code>DELIMITER $$
+
+CREATE PROCEDURE ReturnBook (
+    IN p_rollno INT,
+    IN p_book_name VARCHAR(50)
+)
+BEGIN
+    DECLARE v_date_of_issue DATE;
+    DECLARE v_status CHAR(1);
+    DECLARE v_days INT;
+    DECLARE v_fine_amt DECIMAL(10, 2) DEFAULT 0;
+    
+    DECLARE exit handler FOR NOT FOUND 
+    BEGIN
+        SELECT 'No matching record found.' AS Message;
+    END;
+    
+    SELECT date_of_issue, status 
+    INTO v_date_of_issue, v_status
+    FROM Borrower
+    WHERE roll_no = p_rollno AND book_name = p_book_name;
+    
+    IF v_status = 'I' THEN
+        SET v_days = DATEDIFF(CURDATE(), v_date_of_issue);
+        
+        IF v_days > 30 THEN
+            SET v_fine_amt = (15 * 5) + ((v_days - 30) * 50);
+        ELSEIF v_days > 15 THEN
+            SET v_fine_amt = (v_days - 15) * 5;
+        ELSE
+            SET v_fine_amt = 0;
+        END IF;
+        
+        UPDATE Borrower
+        SET status = 'R'
+        WHERE roll_no = p_rollno AND book_name = p_book_name;
+        
+        IF v_fine_amt > 0 THEN
+            INSERT INTO Fine (roll_no, fine_date, fine_amt)
+            VALUES (p_rollno, CURDATE(), v_fine_amt);
+        END IF;
+        
+        SELECT 'Book returned successfully.' AS Message, v_fine_amt AS Fine;
+    ELSE
+        SELECT 'Book already returned.' AS Message;
+    END IF;
+END $$
+
+DELIMITER ;</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Test Cases -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">3️⃣</span>
+                    Test Cases
+                </h3>
+                <span class="badge step">Step 3</span>
+
+                <span class="badge test">Test 1: Book 115 days overdue</span>
+                <pre><code>INSERT INTO Borrower (roll_no, borr_name, date_of_issue, book_name, status)
+VALUES (50, 'SJK', '2025-07-03', 'History of Korea', 'I');
+
+CALL ReturnBook(50, 'History of Korea');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="query-explanation">
+                    <strong>Expected:</strong> Fine = ₹75 + (85 × ₹50) = ₹4,325
+                </div>
+
+                <span class="badge test">Test 2: Record not found</span>
+                <pre><code>CALL ReturnBook(25, 'Descendents of the Sun');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="query-explanation">
+                    <strong>Expected:</strong> "No matching record found."
+                </div>
+
+                <span class="badge test">Test 3: Book 100 days overdue</span>
+                <pre><code>INSERT INTO Borrower (roll_no, borr_name, date_of_issue, book_name, status)
+VALUES (16, 'Kim Seon Ho', '2025-07-18', 'Hometown Cha Cha Cha', 'I');
+
+CALL ReturnBook(16, 'Hometown Cha Cha Cha');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <span class="badge test">Test 4: Already returned book</span>
+                <pre><code>CALL ReturnBook(16, 'Hometown Cha Cha Cha');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="query-explanation">
+                    <strong>Expected:</strong> "Book already returned."
+                </div>
+
+                <span class="badge test">Test 5: Book 134 days overdue</span>
+                <pre><code>INSERT INTO Borrower (roll_no, borr_name, date_of_issue, book_name, status)
+VALUES (3, 'Shaun Murphy', '2025-06-14', 'Good Doctor', 'I');
+
+CALL ReturnBook(3, 'Good Doctor');</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Verify Results -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">4️⃣</span>
+                    Verify Results
+                </h3>
+                <span class="badge step">Step 4</span>
+
+                <pre><code>SELECT * FROM Borrower;
+SELECT * FROM Fine;</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="query-explanation">
+                    <strong>Check:</strong>
+                    <p>✓ Status changed from 'I' to 'R'</p>
+                    <p>✓ Fine records inserted correctly</p>
+                    <p>✓ No duplicate entries for returned books</p>
+                </div>
+            </div>
+
+            <!-- Key Concepts -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">💡</span>
+                    Key Concepts
+                </h3>
+
+                <div class="concept-box">
+                    <h4>1. IF-ELSEIF-ELSE Control Structure</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>IF v_days > 30 THEN
+    -- Complex fine calculation
+ELSEIF v_days > 15 THEN
+    -- Simple fine calculation
+ELSE
+    -- No fine
+END IF;</code></pre>
+                    <p>Implements conditional logic for tiered fine calculation.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>2. Exception Handling</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>DECLARE exit handler FOR NOT FOUND 
+BEGIN
+    SELECT 'No matching record found.' AS Message;
+END;</code></pre>
+                    <p>Handles cases when SELECT INTO finds no matching record. EXIT handler terminates procedure after execution.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>3. DATEDIFF Function</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>SET v_days = DATEDIFF(CURDATE(), v_date_of_issue);</code></pre>
+                    <p>Calculates difference in days between current date and issue date.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>4. Fine Calculation Logic</h4>
+                    <p><strong>For days > 30:</strong></p>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>SET v_fine_amt = (15 * 5) + ((v_days - 30) * 50);</code></pre>
+                    <p>Days 16-30: 15 × ₹5 = ₹75<br>Days beyond 30: (total_days - 30) × ₹50</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>5. Status Validation</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>IF v_status = 'I' THEN
+    -- Process return
+ELSE
+    SELECT 'Book already returned.' AS Message;
+END IF;</code></pre>
+                    <p>Ensures books can only be returned once, prevents duplicate fines.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>6. Conditional Insert</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>IF v_fine_amt > 0 THEN
+    INSERT INTO Fine (...) VALUES (...);
+END IF;</code></pre>
+                    <p>Only inserts fine records when fine amount is greater than zero.</p>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📝</span>
+                    Summary
+                </h3>
+
+                <table>
+                    <tr>
+                        <th>Test</th>
+                        <th>Roll</th>
+                        <th>Book</th>
+                        <th>Days</th>
+                        <th>Result</th>
+                    </tr>
+                    <tr>
+                        <td>Test 1</td>
+                        <td>50</td>
+                        <td>History of Korea</td>
+                        <td>115</td>
+                        <td>₹4,325</td>
+                    </tr>
+                    <tr>
+                        <td>Test 2</td>
+                        <td>25</td>
+                        <td>Descendents...</td>
+                        <td>-</td>
+                        <td>Not found</td>
+                    </tr>
+                    <tr>
+                        <td>Test 3</td>
+                        <td>16</td>
+                        <td>Hometown...</td>
+                        <td>100</td>
+                        <td>₹3,575</td>
+                    </tr>
+                    <tr>
+                        <td>Test 4</td>
+                        <td>16</td>
+                        <td>Hometown...</td>
+                        <td>-</td>
+                        <td>Already returned</td>
+                    </tr>
+                    <tr>
+                        <td>Test 5</td>
+                        <td>3</td>
+                        <td>Good Doctor</td>
+                        <td>134</td>
+                        <td>₹5,275</td>
+                    </tr>
+                </table>
+
+                <div class="info-card">
+                    <h4>✅ Completed Tasks</h4>
+                    <p><strong>1.</strong> Created Borrower and Fine tables</p>
+                    <p><strong>2.</strong> Implemented ReturnBook procedure with tiered fine logic</p>
+                    <p><strong>3.</strong> Added exception handling for missing records</p>
+                    <p><strong>4.</strong> Validated book status to prevent duplicate returns</p>
+                    <p><strong>5.</strong> Tested all scenarios including edge cases</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>✅ End of Assignment 4</h3>
+            <p>PL/SQL: Control Structures & Exception Handling</p>
+            <p>Database Management System | Roll No. 31145</p>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pre = this.parentElement;
+                    const code = pre.querySelector('code');
+                    const text = code ? code.textContent : pre.textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.textContent = '✓ Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.textContent = '📋 Copy';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

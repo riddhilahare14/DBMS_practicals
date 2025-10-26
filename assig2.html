@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Assignment 2 - Roll No. 31145</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p { 
+            font-size: 1.2em; 
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .progress-indicator {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            background: #ffffff;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section h3 { 
+            color: #667eea; 
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .concept-box h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .concept-box p, .concept-box ul {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .concept-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        code { 
+            color: #68d391; 
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+        
+        .query-explanation {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 15px 20px;
+            border-left: 4px solid #38b2ac;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(56, 178, 172, 0.1);
+        }
+        
+        .query-explanation strong {
+            color: #2c7a7b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .badge.method {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .badge.table {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        table tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        table tr:nth-child(even) { 
+            background: #f8f9fa; 
+        }
+        
+        table tr:hover { 
+            background: #e6f2ff;
+            transform: scale(1.01);
+        }
+        
+        table td {
+            color: #495057;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 DBMS Assignment 2</h1>
+            <p>Roll No.: 31145 | Database: te31145_db</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="index.html" class="back-btn">
+                <span>←</span> Back to Home
+            </a>
+            <div class="progress-indicator">
+                <strong>Assignment 2:</strong> Basic SQL Operations
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Table Schema -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📋</span>
+                    Table Schema
+                </h3>
+                <div class="concept-box">
+                    <h4>Database Structure</h4>
+                    <p>We're working with 3 interconnected tables:</p>
+                    <ul>
+                        <li><strong>Dept:</strong> Department information</li>
+                        <li><strong>Employee:</strong> Employee details linked to departments</li>
+                        <li><strong>Project:</strong> Project information linked to departments</li>
+                    </ul>
+                </div>
+                <pre><code>USE te31145_db;
+
+CREATE TABLE Dept (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50),
+    dept_location VARCHAR(20)
+);
+
+CREATE TABLE Project (
+    proj_id INT PRIMARY KEY,
+    dept_id INT,
+    proj_name VARCHAR(20),
+    proj_location VARCHAR(20),
+    proj_cost INT,
+    proj_year INT,
+    FOREIGN KEY (dept_id) REFERENCES Dept(dept_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,
+    dept_id INT,
+    emp_fname VARCHAR(20),
+    emp_lname VARCHAR(20),
+    emp_position VARCHAR(50),
+    emp_salary INT,
+    emp_joinDate DATE,
+    FOREIGN KEY (dept_id) REFERENCES Dept(dept_id) ON DELETE CASCADE
+);</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">1</span>
+                    Insert Records
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: INSERT Statement</h4>
+                    <p>INSERT adds new rows to a table. Think of it like adding a new entry to a contact list in your phone.</p>
+                </div>
+                
+                <span class="badge table">Department Data</span>
+                <pre><code>INSERT INTO Dept VALUES
+(1, 'Computer', 'Mumbai'),
+(2, 'IT', 'Pune'),
+(3, 'HR', 'Delhi'),
+(4, 'Marketing', 'Mumbai'),
+(5, 'Finance', 'Bangalore');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <span class="badge table">Employee Data</span>
+                <pre><code>INSERT INTO Employee (emp_id, dept_id, emp_fname, emp_lname, emp_position, emp_salary, emp_joinDate) 
+VALUES
+(1, 1, 'Peter', 'Parker', 'Developer', 55000, '1980-06-15'),
+(2, 2, 'Harry', 'Potter', 'Analyst', 60000, '1984-07-22'),
+(3, 1, 'Pamela', 'Anderson', 'Developer', 58000, '1983-04-19'),
+(4, 3, 'John', 'Doe', 'HR Manager', 75000, '1990-01-10'),
+(5, 4, 'Jessica', 'Jones', 'Accountant', 52000, '1987-12-05'),
+(6, 2, 'Paul', 'Smith', 'Analyst', 61000, '1986-09-17'),
+(7, 1, 'Helen', 'Mirren', 'Team Lead', 70000, '1982-03-20'),
+(8, 5, 'Peter', 'Quill', 'Marketing Executive', 48000, '1995-08-12'),
+(9, 2, 'Hannah', 'Montana', 'Support', 45000, '1981-11-30'),
+(10, 3, 'Philip', 'Fry', 'HR Executive', 50000, '1989-05-23');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <span class="badge table">Project Data</span>
+                <pre><code>INSERT INTO Project (proj_id, dept_id, proj_name, proj_location, proj_cost, proj_year) 
+VALUES
+(101, 1, 'Alpha', 'Pune', 200000, 2004),
+(102, 2, 'Beta', 'Mumbai', 450000, 2005),
+(103, 3, 'Gamma', 'Pune', 750000, 2007),
+(104, 4, 'Delta', 'Delhi', 150000, 2004),
+(105, 5, 'Epsilon', 'Bangalore', 1000000, 2006);</code><button class="copy-btn">📋 Copy</button></pre>
+                
+                <div class="query-explanation">
+                    <strong>What this does:</strong> Adds 5 departments, 10 employees, and 5 projects to the database with all their information.
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">2</span>
+                    Filter Employees with Multiple Conditions
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concepts Used</h4>
+                    <p><span class="highlight">JOIN:</span> Combines Employee and Dept tables</p>
+                    <p><span class="highlight">LIKE:</span> Pattern matching (% means "anything")</p>
+                    <p><span class="highlight">WHERE:</span> Filters data based on conditions</p>
+                </div>
+                
+                <span class="badge method">Method I: Using OR</span>
+                <pre><code>SELECT * FROM Employee e
+JOIN Dept d ON d.dept_id = e.dept_id
+WHERE (d.dept_name = 'Computer' OR d.dept_name = 'IT') 
+AND (e.emp_fname LIKE 'p%' OR e.emp_fname LIKE 'h%');</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <span class="badge method">Method II: Using IN</span>
+                <pre><code>SELECT * FROM Employee e
+JOIN Dept d ON d.dept_id = e.dept_id
+WHERE d.dept_name IN ('Computer', 'IT') 
+AND (e.emp_fname LIKE 'p%' OR e.emp_fname LIKE 'h%');</code><button class="copy-btn">📋 Copy</button></pre>
+                
+                <div class="query-explanation">
+                    <strong>In simple words:</strong> "Show me all employees from Computer or IT department whose first name starts with P or H"
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">3</span>
+                    List Unique Employee Positions
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: DISTINCT</h4>
+                    <p>DISTINCT removes duplicates - like getting a list of unique items from your shopping cart.</p>
+                </div>
+                <pre><code>SELECT DISTINCT emp_position FROM Employee;
+
+-- Alternative: Count unique positions
+SELECT COUNT(DISTINCT emp_position) AS total_positions FROM Employee;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Shows each job position only once (Developer, Analyst, HR Manager, etc.)
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">4</span>
+                    Salary Increase for Employees Joined Before 1985
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: UPDATE Statement</h4>
+                    <p>UPDATE modifies existing data. The <span class="highlight">YEAR()</span> function extracts the year from a date.</p>
+                </div>
+                <pre><code>UPDATE Employee
+SET emp_salary = emp_salary * 1.1    -- 10% increase
+WHERE YEAR(emp_joinDate) < 1985;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Affected Employees:</strong> Peter Parker, Harry Potter, Pamela Anderson, Helen Mirren, Hannah Montana (5 employees)
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">5</span>
+                    Delete Departments in Mumbai
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: DELETE with CASCADE</h4>
+                    <p>DELETE removes rows. CASCADE means related records in other tables are automatically deleted too.</p>
+                </div>
+                <pre><code>DELETE FROM Dept
+WHERE dept_location = 'Mumbai';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>⚠️ Warning:</strong> Deletes Computer & Marketing departments AND all their employees and projects!
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">6</span>
+                    Find Projects in Pune
+                </h3>
+                <pre><code>SELECT proj_name FROM Project WHERE proj_location = 'Pune';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Alpha, Gamma
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">7</span>
+                    Projects with Cost Between 100000 and 500000
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: BETWEEN</h4>
+                    <p>BETWEEN finds values in a range (inclusive of both endpoints).</p>
+                </div>
+                <pre><code>-- Method 1: Using BETWEEN
+SELECT * FROM Project WHERE proj_cost BETWEEN 100000 AND 500000;
+
+-- Method 2: Using AND
+SELECT * FROM Project WHERE proj_cost >= 100000 AND proj_cost <= 500000;</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">8</span>
+                    Maximum and Average Project Cost
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: Aggregate Functions</h4>
+                    <p><span class="highlight">MAX():</span> Finds highest value | <span class="highlight">AVG():</span> Calculates average</p>
+                </div>
+                <pre><code>-- Find most expensive project
+SELECT * FROM Project 
+WHERE proj_cost = (SELECT MAX(proj_cost) FROM Project);
+
+-- Calculate average cost
+SELECT AVG(proj_cost) AS avg_proj_cost FROM Project;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Subquery:</strong> The inner query (in parentheses) runs first and returns the max cost, then the outer query uses that value.
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">9</span>
+                    Sort Employees by Last Name (Descending)
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: ORDER BY</h4>
+                    <p><span class="highlight">DESC:</span> Descending order (Z to A) | <span class="highlight">ASC:</span> Ascending order (default)</p>
+                </div>
+                <pre><code>SELECT emp_id, emp_fname, emp_lname
+FROM Employee
+ORDER BY emp_lname DESC;</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">10</span>
+                    Projects Started in 2004, 2005, or 2007
+                </h3>
+                <div class="info-card">
+                    <h4>💡 Concept: IN Operator</h4>
+                    <p>IN checks if a value matches any item in a list (cleaner than multiple OR conditions).</p>
+                </div>
+                <pre><code>SELECT proj_name, proj_location, proj_cost
+FROM Project
+WHERE proj_year IN (2004, 2005, 2007);</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Equivalent to:</strong> WHERE proj_year = 2004 OR proj_year = 2005 OR proj_year = 2007
+                </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📊</span>
+                    Summary of Operations
+                </h3>
+                <table>
+                    <tr>
+                        <th>Question</th>
+                        <th>Operation</th>
+                        <th>Key Concepts</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>INSERT</td>
+                        <td>Data insertion into multiple tables</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>SELECT with JOIN</td>
+                        <td>Multiple conditions, LIKE, JOIN</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>SELECT DISTINCT</td>
+                        <td>Unique values retrieval</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>UPDATE</td>
+                        <td>Conditional update with YEAR()</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>DELETE</td>
+                        <td>Cascading delete operations</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>SELECT</td>
+                        <td>WHERE clause filtering</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>SELECT</td>
+                        <td>BETWEEN for range queries</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>SELECT</td>
+                        <td>MAX(), AVG(), subquery</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>SELECT</td>
+                        <td>ORDER BY DESC</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>SELECT</td>
+                        <td>IN operator</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>✅ End of Assignment 2</h3>
+            <p>Database Management System | Roll No. 31145</p>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // Copy functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pre = this.parentElement;
+                    const code = pre.querySelector('code');
+                    const text = code ? code.textContent : pre.textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.textContent = '✓ Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.textContent = '📋 Copy';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+
+            // Scroll to top functionality
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Assignment 6 - Roll No. 31145</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p { 
+            font-size: 1.2em; 
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .progress-indicator {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            background: #ffffff;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section h3 { 
+            color: #667eea; 
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .concept-box h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .concept-box p, .concept-box ul {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .concept-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        code { 
+            color: #68d391; 
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+        
+        .query-explanation {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 15px 20px;
+            border-left: 4px solid #38b2ac;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(56, 178, 172, 0.1);
+        }
+        
+        .query-explanation strong {
+            color: #2c7a7b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .badge.test {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .badge.step {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        table tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        table tr:nth-child(even) { 
+            background: #f8f9fa; 
+        }
+        
+        table tr:hover { 
+            background: #e6f2ff;
+            transform: scale(1.01);
+        }
+        
+        table td {
+            color: #495057;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 DBMS Assignment 6</h1>
+            <p>PL/SQL: Parameterized Cursors</p>
+            <p style="font-size: 1em; margin-top: 10px;">Roll No.: 31145 | Database: te31145_db</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="index.html" class="back-btn">
+                <span>←</span> Back to Home
+            </a>
+            <div class="progress-indicator">
+                <strong>Assignment 6:</strong> Cursors & UPSERT
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Problem Statement -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📋</span>
+                    Problem Statement
+                </h3>
+                <div class="concept-box">
+                    <h4>📖 Employee Data Migration System</h4>
+                    <p>Create a stored procedure using parameterized cursor to migrate employee data from staging table to main table based on salary threshold, with UPSERT operations.</p>
+                </div>
+            </div>
+
+            <!-- Database Setup -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">1️⃣</span>
+                    Database Setup
+                </h3>
+                <span class="badge step">Step 1</span>
+
+                <pre><code>USE te31145_db;
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY NOT NULL,
+    emp_name VARCHAR(30),
+    emp_salary INT
+);
+
+CREATE TABLE New_employee (
+    emp_id INT PRIMARY KEY NOT NULL,
+    emp_name VARCHAR(30),
+    emp_salary INT
+);</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Initial Data -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">2️⃣</span>
+                    Insert Initial Data
+                </h3>
+                <span class="badge step">Step 2</span>
+
+                <pre><code>INSERT INTO Employee VALUES (100, 'Song Joong-ki', 50000);
+INSERT INTO Employee VALUES (101, 'Hong Hae-in', 45000);
+
+INSERT INTO New_employee VALUES (100, 'My Song Joong-ki', 75000);
+INSERT INTO New_employee VALUES (103, 'Lee Do-hyun', 55000);</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="info-card">
+                    <h4>📊 Initial State</h4>
+                    <p><strong>Employee:</strong> ID 100 (₹50,000), ID 101 (₹45,000)</p>
+                    <p><strong>New_employee:</strong> ID 100 (₹75,000), ID 103 (₹55,000)</p>
+                </div>
+            </div>
+
+            <!-- Stored Procedure -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">3️⃣</span>
+                    Create Procedure
+                </h3>
+                <span class="badge step">Step 3</span>
+
+                <pre><code>DELIMITER $$
+
+CREATE PROCEDURE ParameterizedCursor(IN p_min_salary INT)
+BEGIN
+    DECLARE v_id INT;
+    DECLARE v_name VARCHAR(30);
+    DECLARE v_salary INT;
+    DECLARE done BOOLEAN DEFAULT FALSE;
+    
+    DECLARE emp_crsr CURSOR FOR
+        SELECT emp_id, emp_name, emp_salary
+        FROM New_employee
+        WHERE emp_salary >= p_min_salary;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN emp_crsr;
+    
+    read_loop: LOOP
+        FETCH emp_crsr INTO v_id, v_name, v_salary;
+        
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        
+        INSERT INTO Employee (emp_id, emp_name, emp_salary)
+        VALUES (v_id, v_name, v_salary)
+        ON DUPLICATE KEY UPDATE
+            emp_name = VALUES(emp_name),
+            emp_salary = VALUES(emp_salary);
+    END LOOP;
+    
+    CLOSE emp_crsr;
+END $$
+
+DELIMITER ;</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="query-explanation">
+                    <strong>How it works:</strong>
+                    <p>Cursor fetches employees with salary ≥ threshold, then inserts new records or updates existing ones using ON DUPLICATE KEY UPDATE.</p>
+                </div>
+            </div>
+
+            <!-- Test 1 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">4️⃣</span>
+                    Test 1: Threshold ₹60,000
+                </h3>
+                <span class="badge test">Test 1</span>
+
+                <pre><code>CALL ParameterizedCursor(60000);
+
+SELECT * FROM Employee;</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="info-card">
+                    <h4>📊 Result</h4>
+                    <p><strong>Selected:</strong> ID 100 (₹75,000) ✓</p>
+                    <p><strong>Skipped:</strong> ID 103 (₹55,000 < 60,000)</p>
+                    <p><strong>Employee Table:</strong> ID 100 updated to "My Song Joong-ki" ₹75,000</p>
+                </div>
+            </div>
+
+            <!-- Add More Data -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">5️⃣</span>
+                    Add More Data
+                </h3>
+                <span class="badge step">Step 4</span>
+
+                <pre><code>INSERT INTO New_employee (emp_id, emp_name, emp_salary) VALUES
+    (104, 'Kim Seon-ho', 95000),
+    (105, 'Ji Chang-wook', 80000),
+    (106, 'Randheer Raizada', 65000),
+    (107, 'Park Hyung-shik', 55000);</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Test 2 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">6️⃣</span>
+                    Test 2: Threshold ₹70,000
+                </h3>
+                <span class="badge test">Test 2</span>
+
+                <pre><code>CALL ParameterizedCursor(70000);
+
+SELECT * FROM Employee;</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <div class="info-card">
+                    <h4>📊 Result</h4>
+                    <p><strong>Selected:</strong> ID 100 (₹75,000), ID 104 (₹95,000), ID 105 (₹80,000)</p>
+                    <p><strong>Final Employee Table:</strong></p>
+                    <p>• ID 100: My Song Joong-ki, ₹75,000 (updated)</p>
+                    <p>• ID 101: Hong Hae-in, ₹45,000 (unchanged)</p>
+                    <p>• ID 104: Kim Seon-ho, ₹95,000 (new)</p>
+                    <p>• ID 105: Ji Chang-wook, ₹80,000 (new)</p>
+                </div>
+            </div>
+
+            <!-- Key Concepts -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">💡</span>
+                    Key Concepts
+                </h3>
+
+                <div class="concept-box">
+                    <h4>1. Parameterized Cursor</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>DECLARE emp_crsr CURSOR FOR
+    SELECT ... WHERE emp_salary >= p_min_salary;</code></pre>
+                    <p>Cursor query uses procedure parameter for dynamic filtering.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>2. CONTINUE HANDLER</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;</code></pre>
+                    <p>Sets flag when cursor reaches end, allowing graceful loop exit.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>3. LOOP with Label</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>read_loop: LOOP
+    FETCH emp_crsr INTO v_id, v_name, v_salary;
+    IF done THEN LEAVE read_loop; END IF;
+    -- Process record
+END LOOP;</code></pre>
+                    <p>Label allows explicit LEAVE statement for loop exit.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>4. ON DUPLICATE KEY UPDATE (UPSERT)</h4>
+                    <pre style="background: #2d3748; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>INSERT INTO Employee (emp_id, emp_name, emp_salary)
+VALUES (v_id, v_name, v_salary)
+ON DUPLICATE KEY UPDATE
+    emp_name = VALUES(emp_name),
+    emp_salary = VALUES(emp_salary);</code></pre>
+                    <p>If PRIMARY KEY exists, UPDATE; otherwise INSERT.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>5. Declaration Order</h4>
+                    <p><strong>Correct Order:</strong> Variables → Cursors → Handlers</p>
+                    <p>Handlers may reference cursors, cursors may use variables.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>6. Cursor Lifecycle</h4>
+                    <p><strong>OPEN:</strong> Execute query, create result set</p>
+                    <p><strong>FETCH:</strong> Get one row, move pointer forward</p>
+                    <p><strong>CLOSE:</strong> Release resources (mandatory)</p>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📝</span>
+                    Summary
+                </h3>
+
+                <table>
+                    <tr>
+                        <th>Test</th>
+                        <th>Threshold</th>
+                        <th>Records Selected</th>
+                        <th>Result</th>
+                    </tr>
+                    <tr>
+                        <td>Test 1</td>
+                        <td>₹60,000</td>
+                        <td>1 (ID 100)</td>
+                        <td>✅ Updated ID 100</td>
+                    </tr>
+                    <tr>
+                        <td>Test 2</td>
+                        <td>₹70,000</td>
+                        <td>3 (ID 100, 104, 105)</td>
+                        <td>✅ Updated 100, Added 104, 105</td>
+                    </tr>
+                </table>
+
+                <div class="info-card" style="margin-top: 20px;">
+                    <h4>✅ Completed Tasks</h4>
+                    <p><strong>1.</strong> Created Employee and New_employee tables</p>
+                    <p><strong>2.</strong> Implemented parameterized cursor procedure</p>
+                    <p><strong>3.</strong> Used UPSERT logic for insert/update</p>
+                    <p><strong>4.</strong> Tested with different salary thresholds</p>
+                    <p><strong>5.</strong> Verified row-by-row processing with LOOP</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>✅ End of Assignment 6</h3>
+            <p>PL/SQL: Parameterized Cursors & UPSERT</p>
+            <p>Database Management System | Roll No. 31145</p>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pre = this.parentElement;
+                    const code = pre.querySelector('code');
+                    const text = code ? code.textContent : pre.textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.textContent = '✓ Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.textContent = '📋 Copy';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

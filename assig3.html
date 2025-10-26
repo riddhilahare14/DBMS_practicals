@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Assignment 3 - Roll No. 31145</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p { 
+            font-size: 1.2em; 
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .back-btn {
+            background: #43e97b;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #38f9d7;
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(67, 233, 123, 0.3);
+        }
+        
+        .progress-indicator {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            background: #ffffff;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #43e97b;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section h3 { 
+            color: #43e97b; 
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #43e97b;
+        }
+        
+        .concept-box h4 {
+            color: #00c9a7;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .concept-box p, .concept-box ul {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .concept-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        code { 
+            color: #68d391; 
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #43e97b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn:hover {
+            background: #38f9d7;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+        
+        .query-explanation {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 15px 20px;
+            border-left: 4px solid #38b2ac;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(56, 178, 172, 0.1);
+        }
+        
+        .query-explanation strong {
+            color: #2c7a7b;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .query-explanation ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(67, 233, 123, 0.3);
+        }
+        
+        .badge.advanced {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .badge.intermediate {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .badge.basic {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        table tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        table tr:nth-child(even) { 
+            background: #f8f9fa; 
+        }
+        
+        table tr:hover { 
+            background: #e6fff9;
+            transform: scale(1.01);
+        }
+        
+        table td {
+            color: #495057;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h4 {
+            color: #00897b;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            line-height: 1.7;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .footer h3 {
+            color: #43e97b;
+            margin-bottom: 10px;
+        }
+        
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tip-box strong {
+            color: #856404;
+        }
+
+        .joins-table {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(67, 233, 123, 0.6);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 DBMS Assignment 3</h1>
+            <p>Roll No.: 31145 | Database: te31145_db</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="index.html" class="back-btn">
+                <span>←</span> Back to Home
+            </a>
+            <div class="progress-indicator">
+                <strong>Assignment 3:</strong> Advanced SQL Operations
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Table Schema -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📋</span>
+                    Table Schema
+                </h3>
+                <div class="concept-box">
+                    <h4>Database Structure</h4>
+                    <p>We're working with 3 interconnected tables with AUTO_INCREMENT for emp_id:</p>
+                    <ul>
+                        <li><strong>Dept:</strong> Department information</li>
+                        <li><strong>Employee:</strong> Employee details with auto-generated IDs</li>
+                        <li><strong>Project:</strong> Project information linked to departments</li>
+                    </ul>
+                </div>
+                <pre><code>USE te31145_db;
+
+CREATE TABLE Dept (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50),
+    dept_location VARCHAR(20)
+);
+
+CREATE TABLE Project (
+    proj_id INT PRIMARY KEY,
+    dept_id INT,
+    proj_name VARCHAR(20),
+    proj_location VARCHAR(20),
+    proj_cost INT,
+    proj_year INT,
+    FOREIGN KEY (dept_id) REFERENCES Dept(dept_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    dept_id INT,
+    emp_fname VARCHAR(20),
+    emp_lname VARCHAR(20),
+    emp_position VARCHAR(50),
+    emp_salary INT,
+    emp_joinDate DATE,
+    FOREIGN KEY (dept_id) REFERENCES Dept(dept_id) ON DELETE CASCADE
+);</code><button class="copy-btn">📋 Copy</button></pre>
+            </div>
+
+            <!-- Understanding JOINs -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">🔗</span>
+                    Understanding JOINs
+                </h3>
+                <div class="info-card">
+                    <h4>What is a JOIN?</h4>
+                    <p>A JOIN combines data from multiple tables. Imagine two lists - one with student names and IDs, another with IDs and grades. JOIN helps us see "which student got which grade" by matching the IDs.</p>
+                </div>
+                <div class="joins-table">
+                    <table>
+                        <tr>
+                            <th>JOIN Type</th>
+                            <th>What It Does</th>
+                            <th>Simple Analogy</th>
+                        </tr>
+                        <tr>
+                            <td>INNER JOIN</td>
+                            <td>Shows only matching records</td>
+                            <td>Students who submitted assignments</td>
+                        </tr>
+                        <tr>
+                            <td>LEFT JOIN</td>
+                            <td>All from left + matching from right</td>
+                            <td>All students, even without submission</td>
+                        </tr>
+                        <tr>
+                            <td>RIGHT JOIN</td>
+                            <td>All from right + matching from left</td>
+                            <td>All assignments, even without students</td>
+                        </tr>
+                        <tr>
+                            <td>NATURAL JOIN</td>
+                            <td>Auto-matches common columns</td>
+                            <td>Smart join that figures it out</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">1</span>
+                    Employee & Department Details (NATURAL JOIN)
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: NATURAL JOIN</h4>
+                    <p>NATURAL JOIN automatically finds columns with the same name (dept_id) and joins on them. It's like a smart assistant doing the work for you - no need to specify ON conditions!</p>
+                </div>
+                <pre><code>SELECT *
+FROM Employee
+NATURAL JOIN Dept;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Shows employee details along with their department name and location, automatically matched by dept_id
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">2</span>
+                    Employee Details with Department Location
+                </h3>
+                <span class="badge intermediate">Intermediate</span>
+                <div class="info-card">
+                    <h4>💡 Concept: INNER JOIN</h4>
+                    <p>Unlike NATURAL JOIN, here we explicitly tell which columns to match using the ON clause. This gives us more control over the join condition.</p>
+                </div>
+                <pre><code>SELECT E.emp_fname, E.emp_position, D.dept_location, E.emp_joinDate
+FROM Employee E
+INNER JOIN Dept D ON E.dept_id = D.dept_id;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>In simple words:</strong> "Show employee name, position, department location, and join date for employees who belong to a department"
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">3</span>
+                    Employees with Projects Not in Hyderabad
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: LEFT JOIN with Filter</h4>
+                    <p>LEFT JOIN keeps ALL employees, even if they don't have projects. Then the WHERE clause filters out projects in Hyderabad.</p>
+                    <p><span class="highlight">&lt;&gt;</span> means "not equal to" (same as !=)</p>
+                </div>
+                <pre><code>SELECT E.*, P.proj_id, P.proj_cost
+FROM Employee E
+LEFT JOIN Project P ON E.dept_id = P.dept_id
+WHERE P.proj_location <> 'Hyderabad';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>What this does:</strong> Shows all employees with their projects, excluding any projects located in Hyderabad
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">4</span>
+                    Department & Employee for 2020 Projects
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: Multiple JOINs & CONCAT</h4>
+                    <p>We can chain multiple joins to connect 3+ tables. The <span class="highlight">CONCAT()</span> function combines first and last names into one full name column.</p>
+                </div>
+                <pre><code>SELECT D.dept_name, 
+       CONCAT(E.emp_fname, ' ', E.emp_lname) AS emp_name, 
+       E.emp_position
+FROM Employee E
+RIGHT JOIN Dept D ON E.dept_id = D.dept_id
+INNER JOIN Project P ON D.dept_id = P.dept_id
+WHERE P.proj_year = 2020;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Shows department name, full employee name, and position for all projects that started in 2020
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">5</span>
+                    Employees in High-Cost Projects
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: Three-Table JOIN with DISTINCT</h4>
+                    <p>When joining multiple tables, we might get duplicate rows. <span class="highlight">DISTINCT</span> ensures each combination appears only once.</p>
+                </div>
+                <pre><code>SELECT DISTINCT E.emp_position, D.dept_name
+FROM Employee E
+INNER JOIN Dept D ON E.dept_id = D.dept_id
+INNER JOIN Project P ON D.dept_id = P.dept_id
+WHERE P.proj_cost > 30000;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>What this does:</strong> Shows unique combinations of employee positions and department names for projects costing more than 30,000
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">6</span>
+                    Projects Started in 2015
+                </h3>
+                <span class="badge basic">Basic</span>
+                <div class="info-card">
+                    <h4>💡 Concept: Simple SELECT with WHERE</h4>
+                    <p>A straightforward query to filter projects by their start year.</p>
+                </div>
+                <pre><code>SELECT proj_name 
+FROM Project
+WHERE proj_year = 2015;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Shows names of all projects that started in 2015
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">7</span>
+                    Departments with Exactly 5 Employees
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: Subquery with GROUP BY & HAVING</h4>
+                    <p><span class="highlight">GROUP BY:</span> Groups rows with same values (like grouping students by class)</p>
+                    <p><span class="highlight">HAVING:</span> Filters groups AFTER grouping (different from WHERE which filters rows BEFORE grouping)</p>
+                    <p><span class="highlight">COUNT():</span> Counts number of records in each group</p>
+                </div>
+                <pre><code>SELECT D.dept_name 
+FROM Dept D
+WHERE dept_id IN (
+    SELECT dept_id
+    FROM Employee
+    GROUP BY dept_id
+    HAVING COUNT(emp_id) = 5
+);</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Step-by-step execution:</strong>
+                    <ol>
+                        <li>Inner query groups employees by department ID</li>
+                        <li>Counts employees in each department</li>
+                        <li>HAVING filters to keep only departments with exactly 5 employees</li>
+                        <li>Outer query retrieves the names of those departments</li>
+                    </ol>
+                </div>
+                <div class="tip-box">
+                    <strong>💡 WHERE vs HAVING:</strong><br>
+                    WHERE filters rows before grouping → "Show employees with salary > 50000"<br>
+                    HAVING filters groups after grouping → "Show departments with more than 5 employees"
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">8</span>
+                    Count Employees Joined Before 2009
+                </h3>
+                <span class="badge intermediate">Intermediate</span>
+                <div class="info-card">
+                    <h4>💡 Concept: Aggregate Function with JOIN</h4>
+                    <p>Combining <span class="highlight">COUNT()</span> with JOIN to count employees meeting specific criteria across multiple tables.</p>
+                </div>
+                <pre><code>SELECT COUNT(E.emp_id) AS no_of_emp_joined_pro_before_2009
+FROM Employee E
+JOIN Project P ON P.dept_id = E.dept_id
+WHERE YEAR(E.emp_joinDate) < 2009 AND P.proj_year < 2009;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>What this counts:</strong> Employees who joined before 2009 AND are in departments with projects that started before 2009
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">9</span>
+                    Create View: Employee & Department Details
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Concept: What is a VIEW?</h4>
+                    <p>A VIEW is like a saved query or a "virtual table". Think of it as a shortcut - instead of writing a complex query every time, create a view once and use it like a regular table.</p>
+                    <p><strong>Benefits:</strong></p>
+                    <ul>
+                        <li>Simplifies complex queries</li>
+                        <li>Provides security (hide sensitive columns like salary)</li>
+                        <li>Creates consistent interface to data</li>
+                        <li>Reusable across multiple queries</li>
+                    </ul>
+                </div>
+                <pre><code>-- Create the view
+CREATE VIEW emp_dept_view AS
+SELECT CONCAT(E.emp_fname, ' ', E.emp_lname) AS emp_name, 
+       E.emp_position, 
+       E.emp_salary, 
+       E.emp_joinDate,
+       D.dept_name, 
+       D.dept_location
+FROM Employee E, Dept D
+WHERE E.dept_id = D.dept_id;
+
+-- Use the view like a regular table
+SELECT * FROM emp_dept_view;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Result:</strong> Now you can query emp_dept_view instead of writing the complex JOIN every time! The view combines employee and department data for easy access.
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">10</span>
+                    View Manipulation: DML Operations
+                </h3>
+                <span class="badge advanced">Advanced</span>
+                <div class="info-card">
+                    <h4>💡 Simple Views vs Complex Views</h4>
+                    <p><strong>Simple View:</strong> Based on single table - you CAN INSERT, UPDATE, DELETE</p>
+                    <p><strong>Complex View:</strong> Based on multiple tables or has aggregate functions - usually READ-ONLY</p>
+                </div>
+
+                <h4 style="color: #43e97b; margin-top: 20px; margin-bottom: 10px;">A. Create Simple View</h4>
+                <pre><code>CREATE VIEW simple_emp_view AS
+SELECT emp_id, dept_id, emp_fname, emp_lname, emp_position, emp_salary, emp_joinDate
+FROM Employee;
+
+-- Display the view
+SELECT * FROM simple_emp_view;</code><button class="copy-btn">📋 Copy</button></pre>
+
+                <h4 style="color: #43e97b; margin-top: 20px; margin-bottom: 10px;">B. INSERT through View</h4>
+                <pre><code>INSERT INTO simple_emp_view (dept_id, emp_fname, emp_lname, emp_position, emp_salary, emp_joinDate)
+VALUES (1, 'Ravi', 'Sharma', 'Manager', 50000, '2023-06-01');
+
+-- Verify insertion
+SELECT * FROM simple_emp_view WHERE emp_fname = 'Ravi';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Important:</strong> The data is actually inserted into the Employee table, not the view! The view is just a window to the base table.
+                </div>
+
+                <h4 style="color: #43e97b; margin-top: 20px; margin-bottom: 10px;">C. UPDATE through View</h4>
+                <pre><code>UPDATE simple_emp_view
+SET emp_salary = 65000
+WHERE emp_fname = 'Rahul' AND emp_lname = 'Singh';
+
+-- Verify update
+SELECT * FROM simple_emp_view WHERE emp_fname = 'Rahul';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Note:</strong> The update is reflected in the base Employee table as well
+                </div>
+
+                <h4 style="color: #43e97b; margin-top: 20px; margin-bottom: 10px;">D. DELETE through View</h4>
+                <pre><code>DELETE FROM simple_emp_view
+WHERE emp_fname = 'Ritu' AND emp_lname = 'Kamble';
+
+-- Verify deletion
+SELECT * FROM Employee WHERE emp_fname = 'Ritu';</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>Note:</strong> The record is permanently deleted from the actual Employee table
+                </div>
+
+                <h4 style="color: #43e97b; margin-top: 20px; margin-bottom: 10px;">E. DROP View</h4>
+                <pre><code>DROP VIEW simple_emp_view;
+
+-- Try to access the view (will give error)
+SELECT * FROM simple_emp_view;</code><button class="copy-btn">📋 Copy</button></pre>
+                <div class="query-explanation">
+                    <strong>⚠️ Important:</strong> Dropping a view only removes the view definition, NOT the actual data in the base table! The Employee table data remains intact.
+                </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">📊</span>
+                    Summary of Operations
+                </h3>
+                <table>
+                    <tr>
+                        <th>Question</th>
+                        <th>Operation</th>
+                        <th>Key Concepts</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>NATURAL JOIN</td>
+                        <td>Automatic join based on common columns</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>INNER JOIN</td>
+                        <td>Matching records from both tables</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>LEFT JOIN</td>
+                        <td>Include all left table records, filter by condition</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>RIGHT JOIN + INNER JOIN</td>
+                        <td>Multiple joins with filtering</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Multiple INNER JOINs</td>
+                        <td>Three-table join with DISTINCT</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Simple SELECT</td>
+                        <td>WHERE clause filtering</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Subquery with GROUP BY</td>
+                        <td>HAVING clause for aggregate filtering</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>JOIN with COUNT</td>
+                        <td>Aggregate function with conditions</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>CREATE VIEW</td>
+                        <td>Virtual table creation</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>View Manipulation</td>
+                        <td>INSERT, UPDATE, DELETE, DROP on views</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Pro Tips -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">🎯</span>
+                    Pro Tips
+                </h3>
+                <div class="concept-box">
+                    <h4>1. When to use which JOIN?</h4>
+                    <p>• Use <strong>INNER JOIN</strong> when you only want matching records<br>
+                    • Use <strong>LEFT JOIN</strong> when you want all records from the first table<br>
+                    • Use <strong>RIGHT JOIN</strong> when you want all records from the second table<br>
+                    • Use <strong>NATURAL JOIN</strong> when column names are same and you want quick results</p>
+                </div>
+                <div class="concept-box">
+                    <h4>2. GROUP BY vs HAVING vs WHERE</h4>
+                    <p>• <strong>WHERE</strong> filters individual rows BEFORE grouping<br>
+                    • <strong>GROUP BY</strong> groups rows with same values<br>
+                    • <strong>HAVING</strong> filters groups AFTER grouping<br><br>
+                    <strong>Example:</strong> WHERE filters employees → GROUP BY counts them → HAVING filters the counts</p>
+                </div>
+                <div class="concept-box">
+                    <h4>3. When to create a VIEW?</h4>
+                    <p>• Complex query used repeatedly in your application<br>
+                    • Need to hide sensitive columns (like salary from regular users)<br>
+                    • Simplify database structure for end users<br>
+                    • Create a consistent interface even if base tables change</p>
+                </div>
+                <div class="concept-box">
+                    <h4>4. Simple vs Complex Views</h4>
+                    <p><strong>Simple View (DML allowed):</strong><br>
+                    • Based on single table<br>
+                    • No aggregate functions<br>
+                    • Can INSERT, UPDATE, DELETE<br><br>
+                    <strong>Complex View (Usually READ-ONLY):</strong><br>
+                    • Based on multiple tables (JOINs)<br>
+                    • Contains aggregate functions (COUNT, AVG, etc.)<br>
+                    • Contains GROUP BY, DISTINCT<br>
+                    • Cannot perform DML operations</p>
+                </div>
+            </div>
+
+            <!-- Common Mistakes -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">🔍</span>
+                    Common Mistakes to Avoid
+                </h3>
+                <div class="tip-box">
+                    <strong>1. Using WHERE instead of HAVING for grouped data</strong><br>
+                    ❌ Wrong: WHERE COUNT(emp_id) > 5<br>
+                    ✅ Correct: HAVING COUNT(emp_id) > 5
+                </div>
+                <div class="tip-box">
+                    <strong>2. Forgetting table aliases with multiple tables</strong><br>
+                    ❌ Wrong: SELECT dept_id FROM Employee JOIN Dept (ambiguous column)<br>
+                    ✅ Correct: SELECT E.dept_id FROM Employee E JOIN Dept D
+                </div>
+                <div class="tip-box">
+                    <strong>3. Trying to modify complex views</strong><br>
+                    ❌ Wrong: INSERT INTO view_with_joins<br>
+                    ✅ Correct: Use simple views or modify base tables directly
+                </div>
+                <div class="tip-box">
+                    <strong>4. Not understanding JOIN order</strong><br>
+                    ❌ Wrong: Confused about which table is "left" or "right"<br>
+                    ✅ Correct: LEFT table = before LEFT JOIN, RIGHT table = after LEFT JOIN
+                </div>
+            </div>
+
+            <!-- Notes on Views -->
+            <div class="section">
+                <h3>
+                    <span class="section-number">💡</span>
+                    Important Notes on Views
+                </h3>
+                <div class="info-card">
+                    <h4>View Benefits</h4>
+                    <p><strong>Security:</strong> Restrict access to specific columns/rows. For example, hide salary information from regular users.<br><br>
+                    <strong>Simplicity:</strong> Simplify complex queries. Users can query a simple view instead of writing complex JOINs.<br><br>
+                    <strong>Consistency:</strong> Provide consistent interface to data. Even if base tables change, views can remain the same.<br><br>
+                    <strong>Logical Independence:</strong> Change underlying table structure without affecting application queries.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>✅ End of Assignment 3</h3>
+            <p>Database Management System | Roll No. 31145</p>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // Copy functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pre = this.parentElement;
+                    const code = pre.querySelector('code');
+                    const text = code ? code.textContent : pre.textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.textContent = '✓ Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.textContent = '📋 Copy';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+
+            // Scroll to top functionality
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
