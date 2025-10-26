@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Assignments - Roll No. 31145</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .assignment-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .assignment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .assignment-card h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .assignment-card p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .assignment-card.home {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .assignment-card.assignment2 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .assignment-card.assignment3 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .assignment-content {
+            display: none;
+        }
+
+        .assignment-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 30px;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #764ba2;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .concept-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .concept-box h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            color: #68d391;
+            font-family: 'Courier New', monospace;
+        }
+
+        .query-explanation {
+            background: #e6fffa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #38b2ac;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 DBMS Assignments</h1>
+            <p>Roll No. 31145 | Database Management System</p>
+        </header>
+
+        <div class="content">
+            <!-- Home Page -->
+            <div id="home" class="assignment-content active">
+                <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">Select an Assignment</h2>
+                <div class="nav-buttons">
+                    <div class="assignment-card assignment2" onclick="showAssignment('assignment2')">
+                        <h2>Assignment 2</h2>
+                        <p>📝 Basic SQL Queries</p>
+                        <p style="font-size: 0.9em; margin-top: 15px;">
+                            INSERT, SELECT, UPDATE, DELETE operations<br>
+                            WHERE, LIKE, IN, DISTINCT<br>
+                            Aggregate Functions (MAX, AVG)
+                        </p>
+                    </div>
+                    <div class="assignment-card assignment3" onclick="showAssignment('assignment3')">
+                        <h2>Assignment 3</h2>
+                        <p>🔗 Advanced SQL Queries</p>
+                        <p style="font-size: 0.9em; margin-top: 15px;">
+                            JOINS (INNER, LEFT, RIGHT, NATURAL)<br>
+                            Subqueries & GROUP BY<br>
+                            Views & View Manipulation
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🎯 Course Overview</h3>
+                    <div class="concept-box">
+                        <h4>What is DBMS?</h4>
+                        <p>A Database Management System (DBMS) is software that allows us to store, retrieve, and manage data efficiently. Think of it like a smart filing cabinet that organizes information and lets you find it quickly.</p>
+                    </div>
+                    <div class="concept-box">
+                        <h4>Why Learn SQL?</h4>
+                        <p>SQL (Structured Query Language) is the language we use to talk to databases. It's like learning English to communicate with people - SQL helps us communicate with databases to get the information we need.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment 2 Content -->
+            <div id="assignment2" class="assignment-content">
+                <button class="back-btn" onclick="showAssignment('home')">← Back to Home</button>
+                
+                <h2 style="color: #667eea; margin-bottom: 20px;">Assignment 2: Basic SQL Operations</h2>
+                
+                <div class="section">
+                    <h3>📋 Database Schema</h3>
+                    <div class="concept-box">
+                        <h4>Understanding Tables</h4>
+                        <p>We're working with 3 tables that are connected to each other:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>Dept (Department):</strong> Stores information about different departments</li>
+                            <li><strong>Employee:</strong> Stores information about employees</li>
+                            <li><strong>Project:</strong> Stores information about projects</li>
+                        </ul>
+                    </div>
+                    <pre><code>CREATE TABLE Dept (
+    dept_id INT PRIMARY KEY,          -- Unique ID for each department
+    dept_name VARCHAR(50),             -- Name of the department
+    dept_location VARCHAR(20)          -- Where the department is located
+);
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,            -- Unique ID for each employee
+    dept_id INT,                       -- Which department they belong to
+    emp_fname VARCHAR(20),             -- First name
+    emp_lname VARCHAR(20),             -- Last name
+    emp_position VARCHAR(50),          -- Their job title
+    emp_salary INT,                    -- How much they earn
+    emp_joinDate DATE,                 -- When they joined the company
+    FOREIGN KEY (dept_id) REFERENCES Dept(dept_id)
+);</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>Query 1: INSERT Data</h3>
+                    <span class="badge">Basic</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: INSERT Statement</h4>
+                        <p>INSERT is like adding a new row to a spreadsheet. We tell the database which table to add data to and what values to insert.</p>
+                    </div>
+                    <pre><code>INSERT INTO Employee VALUES
+(1, 1, 'Peter', 'Parker', 'Developer', 55000, '1980-06-15'),
+(2, 2, 'Harry', 'Potter', 'Analyst', 60000, '1984-07-22'),
+(3, 1, 'Pamela', 'Anderson', 'Developer', 58000, '1983-04-19');</code></pre>
+                    <div class="query-explanation">
+                        <strong>What this does:</strong> Adds 3 employees to our database with all their information.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 2: Filter with Multiple Conditions</h3>
+                    <span class="badge">Intermediate</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: WHERE Clause with LIKE</h4>
+                        <p><strong>WHERE:</strong> Filters data based on conditions (like filtering emails in your inbox)</p>
+                        <p><strong>LIKE 'p%':</strong> Finds names starting with 'p' (% means "anything can come after")</p>
+                        <p><strong>JOIN:</strong> Combines data from Employee and Dept tables</p>
+                    </div>
+                    <pre><code>SELECT * FROM Employee e
+JOIN Dept d ON d.dept_id = e.dept_id
+WHERE (d.dept_name IN ('Computer', 'IT')) 
+AND (e.emp_fname LIKE 'p%' OR e.emp_fname LIKE 'h%');</code></pre>
+                    <div class="query-explanation">
+                        <strong>In simple words:</strong> "Show me all employees from Computer or IT department whose first name starts with P or H"
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 3: Find Unique Values</h3>
+                    <span class="badge">Basic</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: DISTINCT</h4>
+                        <p>DISTINCT removes duplicates. Like making a list of unique items from your shopping cart.</p>
+                    </div>
+                    <pre><code>SELECT DISTINCT emp_position FROM Employee;</code></pre>
+                    <div class="query-explanation">
+                        <strong>Result:</strong> Shows each job position only once (Developer, Analyst, HR Manager, etc.)
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 4: Update Existing Data</h3>
+                    <span class="badge">Intermediate</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: UPDATE Statement</h4>
+                        <p>UPDATE changes existing data. It's like editing a cell in Excel.</p>
+                        <p><strong>YEAR():</strong> Extracts the year from a date</p>
+                    </div>
+                    <pre><code>UPDATE Employee
+SET emp_salary = emp_salary * 1.1    -- Increase salary by 10%
+WHERE YEAR(emp_joinDate) < 1985;</code></pre>
+                    <div class="query-explanation">
+                        <strong>What this does:</strong> Give a 10% raise to employees who joined before 1985
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 5: Delete Data</h3>
+                    <span class="badge">Basic</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: DELETE with CASCADE</h4>
+                        <p>DELETE removes rows. Because of CASCADE, when we delete a department, all employees and projects in that department are also deleted automatically.</p>
+                    </div>
+                    <pre><code>DELETE FROM Dept
+WHERE dept_location = 'Mumbai';</code></pre>
+                    <div class="query-explanation">
+                        <strong>Warning:</strong> This deletes all departments in Mumbai AND their employees!
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 6-7: Range Queries</h3>
+                    <span class="badge">Basic</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: BETWEEN & Comparison Operators</h4>
+                        <p>We can find data within a range using >=, <=, or BETWEEN keyword.</p>
+                    </div>
+                    <pre><code>-- Projects in Pune
+SELECT proj_name FROM Project
+WHERE proj_location = 'Pune';
+
+-- Projects with cost between 100000 and 500000
+SELECT * FROM Project
+WHERE proj_cost BETWEEN 100000 AND 500000;</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>Query 8: Aggregate Functions</h3>
+                    <span class="badge">Intermediate</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: MAX() and AVG()</h4>
+                        <p><strong>MAX():</strong> Finds the highest value (like finding the tallest person)</p>
+                        <p><strong>AVG():</strong> Calculates average (like calculating average marks)</p>
+                    </div>
+                    <pre><code>-- Most expensive project
+SELECT * FROM Project
+WHERE proj_cost = (SELECT MAX(proj_cost) FROM Project);
+
+-- Average project cost
+SELECT AVG(proj_cost) AS avg_cost FROM Project;</code></pre>
+                    <div class="query-explanation">
+                        <strong>Subquery:</strong> The query inside parentheses runs first, then the outer query uses its result
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 9-10: Sorting & Filtering</h3>
+                    <span class="badge">Basic</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: ORDER BY and IN</h4>
+                        <p><strong>ORDER BY DESC:</strong> Sorts data in descending order (Z to A)</p>
+                        <p><strong>IN:</strong> Checks if value matches any item in a list</p>
+                    </div>
+                    <pre><code>-- Sort employees by last name (descending)
+SELECT emp_id, emp_fname, emp_lname
+FROM Employee
+ORDER BY emp_lname DESC;
+
+-- Projects from specific years
+SELECT proj_name, proj_location, proj_cost
+FROM Project
+WHERE proj_year IN (2004, 2005, 2007);</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Summary Table</h3>
+                    <table>
+                        <tr>
+                            <th>SQL Command</th>
+                            <th>Purpose</th>
+                            <th>Real-Life Example</th>
+                        </tr>
+                        <tr>
+                            <td>INSERT</td>
+                            <td>Add new data</td>
+                            <td>Adding a new contact to your phone</td>
+                        </tr>
+                        <tr>
+                            <td>SELECT</td>
+                            <td>Retrieve data</td>
+                            <td>Searching for a contact</td>
+                        </tr>
+                        <tr>
+                            <td>UPDATE</td>
+                            <td>Modify existing data</td>
+                            <td>Changing someone's phone number</td>
+                        </tr>
+                        <tr>
+                            <td>DELETE</td>
+                            <td>Remove data</td>
+                            <td>Deleting a contact</td>
+                        </tr>
+                        <tr>
+                            <td>WHERE</td>
+                            <td>Filter results</td>
+                            <td>Showing only favorite contacts</td>
+                        </tr>
+                        <tr>
+                            <td>LIKE</td>
+                            <td>Pattern matching</td>
+                            <td>Finding all contacts starting with "John"</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assignment 3 Content -->
+            <div id="assignment3" class="assignment-content">
+                <button class="back-btn" onclick="showAssignment('home')">← Back to Home</button>
+                
+                <h2 style="color: #667eea; margin-bottom: 20px;">Assignment 3: Advanced SQL Operations</h2>
+
+                <div class="section">
+                    <h3>🔗 Understanding JOINS</h3>
+                    <div class="concept-box">
+                        <h4>What is a JOIN?</h4>
+                        <p>A JOIN combines data from multiple tables. Imagine two lists - one with student names and IDs, another with IDs and grades. JOIN helps us see "which student got which grade" by matching the IDs.</p>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>JOIN Type</th>
+                            <th>What It Does</th>
+                            <th>Simple Analogy</th>
+                        </tr>
+                        <tr>
+                            <td>INNER JOIN</td>
+                            <td>Shows only matching records from both tables</td>
+                            <td>Students who submitted assignments</td>
+                        </tr>
+                        <tr>
+                            <td>LEFT JOIN</td>
+                            <td>All records from left table + matching from right</td>
+                            <td>All students, even those who didn't submit</td>
+                        </tr>
+                        <tr>
+                            <td>RIGHT JOIN</td>
+                            <td>All records from right table + matching from left</td>
+                            <td>All assignments, even without submissions</td>
+                        </tr>
+                        <tr>
+                            <td>NATURAL JOIN</td>
+                            <td>Automatically matches columns with same name</td>
+                            <td>Smart join that figures out matching on its own</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>Query 1: NATURAL JOIN</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Automatic Matching</h4>
+                        <p>NATURAL JOIN automatically finds columns with the same name (dept_id) and joins on them. It's like a smart assistant doing the work for you.</p>
+                    </div>
+                    <pre><code>SELECT * FROM Employee
+NATURAL JOIN Dept;</code></pre>
+                    <div class="query-explanation">
+                        <strong>Result:</strong> Shows employee details along with their department name and location, automatically matched by dept_id
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 2: INNER JOIN - Matching Records</h3>
+                    <span class="badge">Intermediate</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Explicit JOIN Condition</h4>
+                        <p>Unlike NATURAL JOIN, here we explicitly tell which columns to match using ON clause.</p>
+                    </div>
+                    <pre><code>SELECT E.emp_fname, E.emp_position, D.dept_location, E.emp_joinDate
+FROM Employee E
+INNER JOIN Dept D ON E.dept_id = D.dept_id;</code></pre>
+                    <div class="query-explanation">
+                        <strong>In simple words:</strong> "Show employee name, position, department location, and join date for employees who belong to a department"
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 3: LEFT JOIN with Filter</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Including Non-Matching Records</h4>
+                        <p>LEFT JOIN keeps ALL employees, even if they don't have projects. Then we filter out Hyderabad projects.</p>
+                    </div>
+                    <pre><code>SELECT E.*, P.proj_id, P.proj_cost
+FROM Employee E
+LEFT JOIN Project P ON E.dept_id = P.dept_id
+WHERE P.proj_location <> 'Hyderabad';</code></pre>
+                    <div class="query-explanation">
+                        <strong>What this does:</strong> Shows all employees with their projects, excluding projects in Hyderabad
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 4: RIGHT JOIN + INNER JOIN</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Multiple JOINs</h4>
+                        <p>We can chain multiple joins to connect 3+ tables. Also using CONCAT to combine first and last names.</p>
+                    </div>
+                    <pre><code>SELECT D.dept_name, 
+       CONCAT(E.emp_fname, ' ', E.emp_lname) AS emp_name, 
+       E.emp_position
+FROM Employee E
+RIGHT JOIN Dept D ON E.dept_id = D.dept_id
+INNER JOIN Project P ON D.dept_id = P.dept_id
+WHERE P.proj_year = 2020;</code></pre>
+                    <div class="query-explanation">
+                        <strong>Result:</strong> Shows department, employee name, and position for projects started in 2020
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 5: Three-Table JOIN with DISTINCT</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Removing Duplicates from JOINs</h4>
+                        <p>When joining multiple tables, we might get duplicate rows. DISTINCT ensures each combination appears only once.</p>
+                    </div>
+                    <pre><code>SELECT DISTINCT E.emp_position, D.dept_name
+FROM Employee E
+INNER JOIN Dept D ON E.dept_id = D.dept_id
+INNER JOIN Project P ON D.dept_id = P.dept_id
+WHERE P.proj_cost > 30000;</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>Query 7: Subquery with GROUP BY</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: Grouping & Counting</h4>
+                        <p><strong>GROUP BY:</strong> Groups rows with same values (like grouping students by class)</p>
+                        <p><strong>HAVING:</strong> Filter groups (different from WHERE which filters rows)</p>
+                    </div>
+                    <pre><code>SELECT D.dept_name FROM Dept D
+WHERE dept_id IN (
+    SELECT dept_id
+    FROM Employee
+    GROUP BY dept_id
+    HAVING COUNT(emp_id) = 5    -- Departments with exactly 5 employees
+);</code></pre>
+                    <div class="query-explanation">
+                        <strong>Step-by-step:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Inner query groups employees by department</li>
+                            <li>Counts employees in each department</li>
+                            <li>Keeps only departments with 5 employees</li>
+                            <li>Outer query gets names of those departments</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Query 9-10: Working with VIEWS</h3>
+                    <span class="badge">Advanced</span>
+                    <div class="concept-box">
+                        <h4>💡 Concept: What is a VIEW?</h4>
+                        <p>A VIEW is like a saved query or a "virtual table". Think of it as a shortcut - instead of writing a complex query every time, create a view once and use it like a table.</p>
+                        <p><strong>Benefits:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Simplifies complex queries</li>
+                            <li>Provides security (hide sensitive columns)</li>
+                            <li>Consistent interface to data</li>
+                        </ul>
+                    </div>
+                    <pre><code>-- Create a view
+CREATE VIEW emp_dept_view AS
+SELECT CONCAT(E.emp_fname, ' ', E.emp_lname) AS emp_name, 
+       E.emp_position, 
+       E.emp_salary, 
+       D.dept_name
+FROM Employee E, Dept D
+WHERE E.dept_id = D.dept_id;
+
+-- Use the view like a table
+SELECT * FROM emp_dept_view;</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>View Manipulation</h3>
+                    <div class="concept-box">
+                        <h4>💡 Simple Views vs Complex Views</h4>
+                        <p><strong>Simple View:</strong> Based on one table - you can INSERT, UPDATE, DELETE</p>
+                        <p><strong>Complex View:</strong> Based on multiple tables or has aggregates - usually read-only</p>
+                    </div>
+                    <pre><code>-- Create simple view
+CREATE VIEW simple_emp_view AS
+SELECT emp_id, dept_id, emp_fname, emp_lname, emp_salary
+FROM Employee;
+
+-- INSERT into view (affects base table)
+INSERT INTO simple_emp_view VALUES 
+(11, 1, 'Ravi', 'Sharma', 50000);
+
+-- UPDATE through view
+UPDATE simple_emp_view
+SET emp_salary = 65000
+WHERE emp_fname = 'Ravi';
+
+-- DELETE through view
+DELETE FROM simple_emp_view
+WHERE emp_fname = 'Ravi';
+
+-- DROP view (doesn't affect base table data)
+DROP VIEW simple_emp_view;</code></pre>
+                    <div class="query-explanation">
+                        <strong>Important:</strong> Changes to simple views affect the underlying table. Dropping a view only removes the view definition, not the actual data.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Key Concepts Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Purpose</th>
+                            <th>Example Use Case</th>
+                        </tr>
+                        <tr>
+                            <td>INNER JOIN</td>
+                            <td>Show matching records only</td>
+                            <td>Employees with departments</td>
+                        </tr>
+                        <tr>
+                            <td>LEFT JOIN</td>
+                            <td>Include all from left table</td>
+                            <td>All employees, even without projects</td>
+                        </tr>
+                        <tr>
+                            <td>GROUP BY</td>
+                            <td>Group similar records</td>
+                            <td>Count employees per department</td>
+                        </tr>
+                        <tr>
+                            <td>HAVING</td>
+                            <td>Filter grouped data</td>
+                            <td>Departments with more than 5 employees</td>
+                        </tr>
+                        <tr>
+                            <td>VIEW</td>
+                            <td>Save complex queries</td>
+                            <td>Frequently used employee-department report</td>
+                        </tr>
+                        <tr>
+                            <td>Subquery</td>
+                            <td>Query inside a query</td>
+                            <td>Find employees in departments with 5+ people</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>🎯 Pro Tips</h3>
+                    <div class="concept-box">
+                        <h4>1. When to use which JOIN?</h4>
+                        <p>• Use INNER JOIN when you only want matching records<br>
+                        • Use LEFT JOIN when you want all records from the first table<br>
+                        • Use RIGHT JOIN when you want all records from the second table</p>
+                    </div>
+                    <div class="concept-box">
+                        <h4>2. GROUP BY vs HAVING vs WHERE</h4>
+                        <p>• WHERE filters individual rows BEFORE grouping<br>
+                        • HAVING filters groups AFTER grouping<br>
+                        • Example: WHERE filters employees, HAVING filters employee counts</p>
+                    </div>
+                    <div class="concept-box">
+                        <h4>3. When to create a VIEW?</h4>
+                        <p>• Complex query used repeatedly<br>
+                        • Need to hide sensitive columns (like salary)<br>
+                        • Simplify database structure for users<br>
+                        • Create a consistent interface to changing data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAssignment(assignmentId) {
+            // Hide all assignment contents
+            const allContents = document.querySelectorAll('.assignment-content');
+            allContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show selected assignment
+            const selectedContent = document.getElementById(assignmentId);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Add copy functionality to code blocks
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre');
+            codeBlocks.forEach((block, index) => {
+                // Create copy button
+                const copyBtn = document.createElement('button');
+                copyBtn.innerHTML = '📋 Copy';
+                copyBtn.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: #667eea;
+                    color: white;
+                    border: none;
+                    padding: 5px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 0.9em;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                `;
+                
+                block.style.position = 'relative';
+                block.appendChild(copyBtn);
+
+                // Show button on hover
+                block.addEventListener('mouseenter', () => {
+                    copyBtn.style.opacity = '1';
+                });
+                block.addEventListener('mouseleave', () => {
+                    copyBtn.style.opacity = '0';
+                });
+
+                // Copy functionality
+                copyBtn.addEventListener('click', () => {
+                    const code = block.querySelector('code');
+                    const text = code ? code.textContent : block.textContent;
+                    navigator.clipboard.writeText(text).then(() => {
+                        copyBtn.innerHTML = '✓ Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '📋 Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
